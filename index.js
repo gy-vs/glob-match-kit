@@ -13,5 +13,16 @@ function picomatch(glob, options, returnState = false) {
   return pico(glob, options, returnState);
 }
 
+function dirMatcher(glob, options) {
+  // default to os.platform()
+  if (options && (options.windows === null || options.windows === undefined)) {
+    // don't mutate the original options object
+    options = { ...options, windows: utils.isWindows() };
+  }
+
+  return pico.dirMatcher(glob, options);
+}
+
 Object.assign(picomatch, pico);
+picomatch.dirMatcher = dirMatcher;
 module.exports = picomatch;
